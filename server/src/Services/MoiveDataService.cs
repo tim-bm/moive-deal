@@ -7,13 +7,11 @@ namespace MovieDeal.Services;
 
 public class MovieDataService : IMovieDataService
 {
-    private readonly IMovieDataApiClientFactory _movieDataApiClientFactory;
     private readonly MoiveDataSource _apiClient;
 
-    public MovieDataService(IMovieDataApiClientFactory movieDataApiClientFactory)
+    public MovieDataService(MoiveDataSource apiClient)
     {
-        this._movieDataApiClientFactory = movieDataApiClientFactory;
-        this._apiClient = this._movieDataApiClientFactory.GenerateApiClent();
+        this._apiClient = apiClient;
     }
 
     public async Task<IList<DataSource.Models.Movie>> ListFilmWorld()
