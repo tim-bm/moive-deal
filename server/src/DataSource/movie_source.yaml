@@ -1,0 +1,178 @@
+openapi: 3.0.3
+info:
+  title: Cinema and Film World Movie API
+  description: API to retrieve movies and movie details from Cinema/File World.
+  version: 1.0.0
+servers:
+  - url: https://webjetapitest.azurewebsites.net/api
+security:
+  - ApiKeyAuth: []
+paths:
+  /cinemaworld/movies:
+    get:
+      summary: Get Cinema World Movies
+      description: Retrieves a list of movies available from Cinema World.
+      responses:
+        '200':
+          description: A list of movies
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieListResponse'
+  
+  /filmworld/movies:
+    get:
+      summary: Get Cinema World Movies
+      description: Retrieves a list of movies available from Cinema World.
+      responses:
+        '200':
+          description: A list of movies
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieListResponse'
+
+  /cinemaworld/movie/{id}:
+    get:
+      summary: Get Movie Details by ID
+      description: Retrieves detailed information for a single movie by its ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Unique identifier of the movie
+          schema:
+            type: string
+            example: cw0076759
+      responses:
+        '200':
+          description: Detailed movie information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieDetail'
+  
+  /filmworld/movie/{id}:
+    get:
+      summary: Get Movie Details by ID
+      description: Retrieves detailed information for a single movie by its ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Unique identifier of the movie
+          schema:
+            type: string
+            example: cw0076759
+      responses:
+        '200':
+          description: Detailed movie information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieDetail'
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+
+  schemas:
+    MovieListResponse:
+      type: object
+      properties:
+        Movies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Movie'
+      required:
+        - Movies
+
+    Movie:
+      type: object
+      properties:
+        Title:
+          type: string
+        Year:
+          type: string
+        ID:
+          type: string
+        Type:
+          type: string
+        Poster:
+          type: string
+          format: uri
+      required:
+        - Title
+        - Year
+        - ID
+        - Type
+        - Poster
+
+    MovieDetail:
+      type: object
+      properties:
+        Title:
+          type: string
+        Year:
+          type: string
+        Rated:
+          type: string
+        Released:
+          type: string
+        Runtime:
+          type: string
+        Genre:
+          type: string
+        Director:
+          type: string
+        Writer:
+          type: string
+        Actors:
+          type: string
+        Plot:
+          type: string
+        Language:
+          type: string
+        Country:
+          type: string
+        Awards:
+          type: string
+        Poster:
+          type: string
+          format: uri
+        Metascore:
+          type: string
+        Rating:
+          type: string
+        Votes:
+          type: string
+        ID:
+          type: string
+        Type:
+          type: string
+        Price:
+          type: string
+      required:
+        - Title
+        - Year
+        - Rated
+        - Released
+        - Runtime
+        - Genre
+        - Director
+        - Writer
+        - Actors
+        - Plot
+        - Language
+        - Country
+        - Awards
+        - Poster
+        - Metascore
+        - Rating
+        - Votes
+        - ID
+        - Type
+        - Price

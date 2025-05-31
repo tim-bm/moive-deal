@@ -1,0 +1,6 @@
+@webjet_test_HostAddress = http://localhost:5122
+
+GET {{webjet_test_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

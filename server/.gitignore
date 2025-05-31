@@ -1,0 +1,9 @@
+**obj/
+**bin/
+**publish/
+!.vscode/
+*.jwk
+.env*
+!.env.example
+**/redis_data
+*.log
