@@ -1,7 +1,11 @@
 using System.Net;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Kiota.Abstractions.Authentication;
+using Microsoft.Kiota.Http.HttpClientLibrary;
+using MovieDeal.DataSource;
 using MovieDeal.Internal.ApiClient;
 using MovieDeal.Services;
+using Polly;
 
 namespace MovieDeal;
 
@@ -44,6 +48,24 @@ public class Startup
                 .AllowAnyMethod()
                 .AllowAnyHeader();
         }));
+
+
+        services.AddHttpClient<MoiveDataSource, MoiveDataSource>(client =>
+        {
+            // The total time out has to be greater than attmpet timeout * retry counts
+            client.Timeout = new TimeSpan(0, 0, 10);
+            var authProvider = new ApiKeyAuthenticationProvider(this.config.ApiKey, "x-access-token", ApiKeyAuthenticationProvider.KeyLocation.Header);
+            var requestAapter = new HttpClientRequestAdapter(authProvider, null, null, client);
+            return new MoiveDataSource(requestAapter);
+        })
+        // The resilience mechanism is trigger at http1.1 while kiota client is on http2 so downgrade it.
+        // https://github.com/microsoft/kiota-dotnet/issues/526#issuecomment-2721189446
+        .AddHttpMessageHandler(() => new DowngrageHttpVersionHandler())
+        .AddStandardResilienceHandler(options =>
+        {
+            options.AttemptTimeout.Timeout = new TimeSpan(0, 0, 2);
+            options.Retry.MaxRetryAttempts = 3;
+        });
 
         // Forwarded Headers that we will trust because this
         // app is deployed behind a TLS terminating proxy
