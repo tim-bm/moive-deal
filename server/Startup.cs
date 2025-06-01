@@ -5,6 +5,7 @@ using Microsoft.Kiota.Http.HttpClientLibrary;
 using MovieDeal.DataSource;
 using MovieDeal.Internal.ApiClient;
 using MovieDeal.Services;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace MovieDeal;
 
@@ -48,6 +49,12 @@ public class Startup
             });
 
         });
+        // For a stable solution, we should use redis stack to cache
+        // For the demo perpose, I choose to the in memory cache
+        services.AddMemoryCache(options =>
+        {
+            options.ExpirationScanFrequency = new TimeSpan(0, 1, 0);
+        });
 
         services.AddSingleton(this.config);
         services.AddSingleton<IMovieDataApiClientFactory, MovieDataApiClientFactory>();
@@ -67,7 +74,7 @@ public class Startup
         services.AddHttpClient<MoiveDataSource, MoiveDataSource>(client =>
         {
             // The total time out has to be greater than attmpet timeout * retry counts
-            client.Timeout = new TimeSpan(0, 0, 10);
+            client.Timeout = new TimeSpan(0, 1, 0);
             var authProvider = new ApiKeyAuthenticationProvider(this.config.ApiKey, "x-access-token", ApiKeyAuthenticationProvider.KeyLocation.Header);
             var requestAapter = new HttpClientRequestAdapter(authProvider, null, null, client);
             return new MoiveDataSource(requestAapter);
@@ -77,7 +84,7 @@ public class Startup
         .AddHttpMessageHandler(() => new DowngrageHttpVersionHandler())
         .AddStandardResilienceHandler(options =>
         {
-            options.AttemptTimeout.Timeout = new TimeSpan(0, 0, 2);
+            options.AttemptTimeout.Timeout = new TimeSpan(0, 0, 5);
             options.Retry.MaxRetryAttempts = 3;
         });
 
