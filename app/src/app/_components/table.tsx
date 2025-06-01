@@ -14,9 +14,11 @@ export interface Row {
 
 export const MovieTable = (Props: { rows: Row[] | undefined }) => {
   const [rows, setRows] = useState<Row[] | undefined>(Props.rows);
+  const [disabled, setDisable] = useState<boolean>(false);
 
   const onGetPrice = useCallback(
     async (row: Row, index: number) => {
+      setDisable(true);
       const cinemaPrice = (await moiveSerice.getCinemaWorldMovie(row.CId!))
         ?.price;
       const filmPricde = (await moiveSerice.getFilmWorldMoive(row.FId!))?.price;
@@ -24,6 +26,7 @@ export const MovieTable = (Props: { rows: Row[] | undefined }) => {
       updatedRows[index].CinemaPrice = cinemaPrice;
       updatedRows[index].FilmPrice = filmPricde;
       setRows(updatedRows);
+      setDisable(false);
     },
     [rows]
   );
@@ -60,13 +63,13 @@ export const MovieTable = (Props: { rows: Row[] | undefined }) => {
                   {row.Title}
                 </td>
                 <td
-                 key={`${rowIndex}-year`}
+                  key={`${rowIndex}-year`}
                   className="px-4 py-2 border border-gray-300 text-sm text-gray-800"
                 >
                   {row.Year}
                 </td>
                 <td
-                 key={`${rowIndex}-fPrice`}
+                  key={`${rowIndex}-fPrice`}
                   className="px-4 py-2 border border-gray-300 text-sm text-gray-800"
                 >
                   {row.FilmPrice}
@@ -78,12 +81,15 @@ export const MovieTable = (Props: { rows: Row[] | undefined }) => {
                   {row.CinemaPrice}
                 </td>
                 <td
-                 key={`${rowIndex}-button`}
+                  key={`${rowIndex}-button`}
                   className="px-4 py-2 border border-gray-300 text-sm text-gray-800"
                 >
                   <button
                     onClick={() => onGetPrice(row, rowIndex)}
-                    className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm cursor-pointer"
+                    className={`px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm ${
+                      disabled ? "cursor-not-allowed" : "cursor-pointer"
+                    }`}
+                    disabled={disabled}
                   >
                     Get Price
                   </button>
