@@ -5,7 +5,6 @@ using Microsoft.Kiota.Http.HttpClientLibrary;
 using MovieDeal.DataSource;
 using MovieDeal.Internal.ApiClient;
 using MovieDeal.Services;
-using Polly;
 
 namespace MovieDeal;
 
@@ -33,7 +32,22 @@ public class Startup
         services.AddOpenApi();
 
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
+        services.AddSwaggerGen(options =>
+        {
+            options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo()
+            {
+                Version = "v1",
+                Title = "Movie Server Api",
+                Description = "The spec for the local development server"
+
+            });
+            options.AddServer(new Microsoft.OpenApi.Models.OpenApiServer()
+            {
+                Description = "Local Development Server",
+                Url = this.config.PublicOrigin,
+            });
+
+        });
 
         services.AddSingleton(this.config);
         services.AddSingleton<IMovieDataApiClientFactory, MovieDataApiClientFactory>();
