@@ -1,0 +1,24 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "isBuildCommand": true,
+            "command": "dotnet",
+            "type": "process",
+            "runOptions": {
+                "instanceLimit": 1
+            },
+            "presentation": {
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "args": [
+                "build",
+                "${workspaceFolder}",
+                "/property:GenerateFullPaths=true"
+            ],
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}
