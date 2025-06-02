@@ -1,6 +1,6 @@
 # movie-deal
 
-A demo project for comparing prices between two different data sources, assuming the intermittance happing from time to time
+A demo project for comparing prices between two different data sources, accounting for intermittent connectivity or data availability.
 
 App: [Doc](app/README.md)
 
