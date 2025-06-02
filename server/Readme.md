@@ -10,6 +10,9 @@ Run the development environment:
 # install the dependencies
 dotnet restore
 
+# create and set up your .env file from the .env.example file
+source ./.env.local
+
 # run the dev server
 dotnet run 
 # or 
@@ -24,7 +27,6 @@ Open [http://localhost:8000/swagger/index.html](http://localhost:8000/swagger/in
 
 
 ```
-# 
 dotnet tool restore
 
 # Generate the SDK from the upstream movie api
