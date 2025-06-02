@@ -12,9 +12,7 @@ public class MoiveController : ControllerBase
 {
     private readonly ILogger<MoiveController> _logger;
     private readonly IMovieDataService _movieService;
-
     private readonly IMapper _mapper;
-
     public MoiveController(IMovieDataService MovieDataService, ILogger<MoiveController> logger, IMapper mapper)
     {
         this._logger = logger;
@@ -48,6 +46,4 @@ public class MoiveController : ControllerBase
         var moive = await this._movieService.GetMoiveFromFilmWorld(Id);
         return this._mapper.Map<MoiveDTO>(moive);
     }
-
-
 }

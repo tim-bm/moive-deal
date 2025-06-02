@@ -124,15 +124,12 @@ public class Startup
             app.UseSwaggerUI();
         }
 
-        // TODO: Add custome exception handler later
-        // app.UseExceptionHandler();
         app.UseForwardedHeaders();
         app.UseHealthChecks("/Health");
         app.UseRouting();
         app.UseCors("DefaultPolicy");
         app.UseAuthentication();
         app.UseAuthorization();
-        // app.UseMetrics();
 
 
         app.UseEndpoints(endpoints =>

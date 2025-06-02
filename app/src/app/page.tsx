@@ -5,10 +5,10 @@ import { MovieTable, Row } from "./_components/table.tsx";
 import { moiveSerice } from "./_services/movieService.js";
 
 export default async function Home() {
-  const data = await moiveSerice.listMoive();
+  const movies = await moiveSerice.listMoive();
 
-  const tableData = data?.filmWorld?.map((f) => {
-    const matchCinemaMovie = data?.cinemaWorld?.find(
+  const rows = movies?.filmWorld?.map((f) => {
+    const matchCinemaMovie = movies?.cinemaWorld?.find(
       (c) => c.title === f.title
     );
     const row: Row = {
@@ -16,8 +16,8 @@ export default async function Home() {
       Year: f.year,
       FId: f.id,
       CId: matchCinemaMovie?.id,
-      CinemaPrice: undefined,
-      FilmPrice: undefined,
+      CinemaPrice: matchCinemaMovie?.price,
+      FilmPrice: f.price,
     };
     return row;
   });
@@ -25,7 +25,7 @@ export default async function Home() {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <MovieTable rows={tableData}></MovieTable>
+        <MovieTable rows={rows}></MovieTable>
       </main>
     </div>
   );

@@ -11,6 +11,6 @@ public class MoiveDTO
 
     public required string Poster { get; set; }
     public string? Price { get; set; }
-    
+
 
 }
